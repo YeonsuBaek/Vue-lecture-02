@@ -2,7 +2,7 @@
   <div class="container">
     <h2>To-Do List</h2>
     <form @submit.prevent="onSubmit" class="d-flex">
-      <div class="flex-grow-1">
+      <div class="flex-grow-1 pr-2">
         <input
           class="form-control"
           type="text"
@@ -15,7 +15,16 @@
       </div>
     </form>
 
-    {{ todos }}
+    <div class="card mt-2">
+      <div class="card-body p-2">
+        {{ todos[0].subject }}
+      </div>
+    </div>
+    <div class="card mt-2">
+      <div class="card-body p-2">
+        {{ todos[1].subject }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -25,7 +34,10 @@ import { ref } from "vue";
 export default {
   setup() {
     const todo = ref("");
-    const todos = ref([]);
+    const todos = ref([
+      { id: 1, subject: "스터디카페" },
+      { id: 2, subject: "장보기" },
+    ]);
 
     const onSubmit = () => {
       todos.value.push({
