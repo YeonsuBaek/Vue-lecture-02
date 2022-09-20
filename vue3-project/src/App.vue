@@ -1,28 +1,28 @@
 <template>
   <div class="container">
     <h2>To-Do List</h2>
-    <form @submit.prevent="onSubmit" class="d-flex">
-      <div class="flex-grow-1 pr-2">
-        <input
-          class="form-control"
-          type="text"
-          v-model="todo"
-          placeholder="Type new to-do"
-        />
+    <form @submit.prevent="onSubmit">
+      <div class="d-flex">
+        <div class="flex-grow-1">
+          <input
+            class="form-control"
+            type="text"
+            v-model="todo"
+            placeholder="Type new to-do"
+          />
+        </div>
+
+        <div>
+          <button class="btn btn-primary" type="submit">Add</button>
+        </div>
       </div>
-      <div>
-        <button class="btn btn-primary" type="submit">Add</button>
-      </div>
+
+      <div v-show="hasError" class="error-msg">This field cannot be empty</div>
     </form>
 
-    <div class="card mt-2">
+    <div v-for="todo in todos" :key="todo.id" class="card mt-2">
       <div class="card-body p-2">
-        {{ todos[0].subject }}
-      </div>
-    </div>
-    <div class="card mt-2">
-      <div class="card-body p-2">
-        {{ todos[1].subject }}
+        {{ todo.subject }}
       </div>
     </div>
   </div>
@@ -34,22 +34,27 @@ import { ref } from "vue";
 export default {
   setup() {
     const todo = ref("");
-    const todos = ref([
-      { id: 1, subject: "스터디카페" },
-      { id: 2, subject: "장보기" },
-    ]);
+    const todos = ref([]);
+    const hasError = ref(false);
 
     const onSubmit = () => {
-      todos.value.push({
-        id: Date.now(),
-        subject: todo.value,
-      });
+      if (todo.value === "") {
+        hasError.value = true;
+      } else {
+        todos.value.push({
+          id: Date.now(),
+          subject: todo.value,
+        });
+
+        hasError.value = false;
+      }
     };
 
     return {
       todo,
       todos,
       onSubmit,
+      hasError,
     };
   },
 };
@@ -62,5 +67,9 @@ h2 {
 
 .flex-grow-1 {
   margin-right: 8px;
+}
+
+.error-msg {
+  color: red;
 }
 </style>
