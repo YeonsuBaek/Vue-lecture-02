@@ -55,6 +55,7 @@ export default {
         });
 
         hasError.value = false;
+        todo.value = "";
       }
     };
 
